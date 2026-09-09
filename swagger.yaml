@@ -174,13 +174,8 @@ paths:
               schema:
                 type: object
                 properties:
-                  data:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        air_quality:
-                          type: string
-                          example: 良好
+                  air_quality:
+                    type: string
+                    example: 良好
         "429":
           description: 請求過於頻繁，請稍後再試
