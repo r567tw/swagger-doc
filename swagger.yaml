@@ -14,10 +14,151 @@ components:
       bearerFormat: JWT
 
 paths:
+  /api/cpbl:
+    get:
+      tags:
+        - Public
+      parameters:
+        - in: query
+          name: date
+          schema:
+            type: string
+            format: date
+          required: true
+          description: 查詢日期，格式為 YYYY-MM-DD
+          example: 2026-09-10
+        - in: query
+          name: kind
+          schema:
+            type: enum
+            enum:
+              - A
+              - D
+          required: false
+          description: 查詢賽程種類，A 代表一軍，D 代表二軍，若不指定則預設為 A
+      summary: 取得中華職棒賽程資訊
+      description: 取得中華職棒賽程資訊，資料來自中華職棒官方網站
+      responses:
+        "200":
+          description: 成功取得中華職棒賽程資訊
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        gameNumber:
+                          type: integer
+                          description: 比賽場次
+                          example: 1
+                        time:
+                          type: string
+                          description: 比賽時間
+                          example: 2026-09-10T18:35:00
+                        homeTeam:
+                          type: string
+                          description: 主場隊伍名稱
+                          example: 樂天桃猿
+                        awayTeam:
+                          type: string
+                          description: 客場隊伍名稱
+                          example: 中信兄弟
+                        awayScore:
+                          type: integer
+                          description: 客場隊伍得分
+                          example: 3
+                        homeScore:
+                          type: integer
+                          description: 主場隊伍得分
+                          example: 5
+                        field:
+                          type: string
+                          description: 比賽場地名稱
+                          example: 桃園國際棒球場
+                        status:
+                          type: string
+                          description: 比賽狀態
+                          example: 已結束
+        "429":
+          description: 請求過於頻繁，請稍後再試
+  /api/mlb:
+    get:
+      tags:
+        - Public
+      parameters:
+        - in: query
+          name: date
+          schema:
+            type: string
+            format: date
+          required: true
+          description: 查詢日期，格式為 YYYY-MM-DD
+          example: 2026-09-10
+      summary: 取得美國職棒賽程資訊
+      description: 取得美國職棒賽程資訊，資料來自美國職棒官方網站
+      responses:
+        "200":
+          description: 成功取得美國職棒賽程資訊
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        gameNumber:
+                          type: integer
+                          description: 比賽場次
+                          example: 1
+                        time:
+                          type: string
+                          description: 比賽時間
+                          example: 2026-09-10T18:35:00Z
+                        homeTeam:
+                          type: string
+                          description: 主場隊伍名稱
+                          example: New York Yankees
+                        awayTeam:
+                          type: string
+                          description: 客場隊伍名稱
+                          example: Boston Red Sox
+                        awayScore:
+                          type: integer
+                          description: 客場隊伍得分
+                          example: 3
+                        homeScore:
+                          type: integer
+                          description: 主場隊伍得分
+                          example: 5
+                        field:
+                          type: string
+                          description: 比賽場地名稱
+                          example: Yankee Stadium, Bronx, NY, USA
+                        inning:
+                          type: string
+                          description: 比賽局數
+                          example: not started
+                        status:
+                          type: string
+                          description: 比賽狀態
+                          example: 已結束
   /api/get-our-location:
     post:
       tags:
-        - 位置
+        - Public
       summary: 利用經緯度可以取得該經緯度所在的城市級資訊
       description: 利用`nominatim.openstreetmap.org`的 API 反查取得目前位置資訊
       requestBody:
@@ -67,7 +208,7 @@ paths:
   /api/astro/{name}:
     get:
       tags:
-        - 星座運勢
+        - Public
       summary: 取得星座運勢
       description: 根據星座名稱取得該星座的運勢資料。支援的星座名稱包括：牡羊座、金牛座、雙子座、巨蟹座、獅子座、處女座、天秤座、天蠍座、射手座、摩羯座、水瓶座、雙魚座
       parameters:
@@ -148,7 +289,7 @@ paths:
   /api/air-quality:
     get:
       tags:
-        - 空氣品質
+        - Public
       summary: 取得空氣品質資料
       description: 取得台灣各地區的空氣品質資料，資料來自環保署
       parameters:
